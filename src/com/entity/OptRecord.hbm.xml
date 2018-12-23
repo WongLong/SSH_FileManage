@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-12-9 3:49:47 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.entity.OptRecord" table="OPTRECORD">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>
+        <property name="optUserName" type="java.lang.String">
+            <column name="OPTUSERNAME" />
+        </property>
+        <property name="optTime" type="java.util.Date">
+            <column name="OPTTIME" />
+        </property>
+        <property name="optMethod" type="java.lang.String">
+            <column name="OPTMETHOD" />
+        </property>
+    </class>
+</hibernate-mapping>

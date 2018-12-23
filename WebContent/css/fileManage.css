@@ -1,0 +1,223 @@
+@charset "UTF-8";
+a{
+	cursor: pointer;
+}
+
+button{
+	cursor: pointer;
+}
+
+.ztree * {
+	font-size: 15px;
+	font-family: STKaiti;
+	font-weight: 500;
+}
+
+.ztree li a.curSelectedNode {
+	background-color: white;
+	border: none;
+	color: red;
+}
+
+#head {
+	width: 100%;
+	height: 50px;
+	background-color: #9cc0f3;
+}
+
+#head #title_container {
+	width: 100%;
+	display: inline-block;
+	margin-top: 20px;
+}
+
+#head #title_container .title_left {
+	display: inline-block;
+	color: #002b8c;
+	font-size: 18px;
+	width: 200px;
+	height: 30px;
+	text-align: center;
+	background-color: white;
+	border-radius: 200px 1000px 0 0;
+	margin-left: 10px;
+	font-weight: 600;
+}
+
+#head #title_container .title_right {
+	width: 55%;
+	float: right;
+	padding-right: 1%;
+	height: 29px;
+	background: -webkit-linear-gradient(left, #94bef4, #5fa1d0);
+	border-top: 1px #5fa1d0 solid;
+}
+
+#head #title_container .title_right ul {
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+	width: auto;
+}
+
+#head #title_container .title_right ul li {
+	border-left: 1px #024394 solid;
+	margin: 5px;
+	float: right;
+	padding-left: 10px;
+	font-size: 13px;
+}
+
+#head #title_container .title_right ul li a{
+	text-decoration:none;
+	color: #024394;
+}
+
+#center {
+	width: 100%;
+	height: 35px;
+	background-color: #d3e5ff;
+	margin-top: 5px;
+	box-shadow: 2px 2px 20px #9cc5ff;
+	border: 1px #89B8D5 solid;
+}
+
+#center #path_title {
+	display: inline-block;
+	height: 100%;
+	font-size: 15px;
+	padding: 0 10px 0 10px;
+	line-height: 35px;
+	color: #024394;
+	font-family: STZhongsong;
+}
+
+#center #path_image {
+	background-image: url(./img/zTreeStandard.png);
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	background-position: -110px -16px;
+	line-height: 0;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-attachment: scroll;
+}
+
+#center #path_container {
+	width: 85%;
+	display: inline-block;
+	height: 90%;
+	background-color: white;
+	border-radius: 3px;
+}
+
+#center #path_container #current_path {
+	font-size: 20px;
+	padding-left: 5px;
+	color: #9c9cad;
+}
+
+#main{
+	width: 100%;
+	height: 600px;
+	margin-top: 3px;
+}
+
+#main #fileTreeCantainer{
+	float: left;
+	padding: 2px 0 0 1px;
+	display: inline-block;
+	width: 20%;
+	height: 100%;
+}
+
+#main #fileTreeCantainer #fileTreeHead{
+	width: 93%;
+	padding: 2% 0 2% 7%;
+	background-color: #d2d2d2;
+	font-size: 13px;
+}
+
+#main #fileTreeCantainer #fileTreeHead #treeHeadImage{
+	background-image: url(./img/diy/2.png);
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	line-height: 0;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-attachment: scroll;
+}
+
+#main #fileContainer{
+	display: inline-block;
+	float: right;
+	margin-right: 1%;
+	width: 78%;
+	height: 100%;
+}
+
+.fileIcon{
+	width: 20px;
+    height: 20px;
+    display: inline-block;
+    line-height: 0;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+}
+
+.fileIcon.docIcon{
+    background-image: url(./img/fileIcon/word.png);
+}
+.fileIcon.pptxIcon{
+    background-image: url(./img/fileIcon/ppt.png);
+}
+.fileIcon.htmlIcon{
+	 background-image: url(./img/fileIcon/html.png);	
+}
+.fileIcon.jpgIcon{
+	 background-image: url(./img/fileIcon/jpg.png);	
+}
+.fileIcon.txtIcon{
+	 background-image: url(./img/fileIcon/txt.png);	
+}
+.fileIcon.folderIcon{
+	background-image: url(./img/fileIcon/folder.png);	
+}
+
+.paramLine{
+	position: inherit;
+	margin-top: 3%;
+}
+
+.paramLine .labelLeft{
+	display: inline-block;
+	margin-left: 10%;
+	color: #024394;
+	font-family: STKaiti;
+	font-weight: 600;
+}
+
+.paramLine .paramRight{
+	display: inline-block;
+	float: right;
+	margin-right: 10%;
+	width: 50%;
+	color: #024394;
+	font-family: STKaiti;
+}
+
+.paramLine input{
+	padding: 1% 2% 1% 2%;
+	width: 96%;
+	color: #024394;
+	font-family: STZhongsong;
+	border: 1px solid rgba(167, 204, 231, 0.5);
+}
+
+#table a{
+	text-decoration:none;
+	color: #024394;
+}

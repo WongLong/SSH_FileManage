@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd 
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx.xsd 
+	http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop.xsd ">
+
+
+	<bean id="dataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="user" value="root" />
+		<property name="password" value="root" />
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl"
+			value="jdbc:mysql://localhost:3306/filemanage?serverTimezone=UTC" />
+	</bean>
+
+	<!--配置Hibernate 的SessionFactory 实例: 通过Spring提供的LocalSessionFactory 进行配置 -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<!--配置数据源属性 -->
+		<property name="dataSource" ref="dataSource" />
+		<!--配置Hibernate 配置文件的位置及名称 -->
+		<property name="configLocation"
+			value="classpath:hibernate.cfg.xml" />
+		<!--配置Hibernate 映射文件的位置及名称，可以使用通配符 -->
+		<property name="mappingLocations"
+			value="classpath:com/entity/*.hbm.xml" />
+	</bean>
+
+	<!-- 配置Spring声明式事务 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 配置事务事务属性 -->
+	<tx:advice id="txAdvice"
+		transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+	<!-- 配置事务切点，并把切点和事务属性关联起来 -->
+	<aop:config>
+		<aop:pointcut expression="execution(* com.dao.*.*(..))"
+			id="txPointcut" />
+		<aop:advisor advice-ref="txAdvice"
+			pointcut-ref="txPointcut" />
+	</aop:config>
+
+
+	<!-- User -->
+	<bean id="userDao" class="com.dao.UserDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userService" class="com.service.UserServiceImpl">
+		<property name="dao" ref="userDao"></property>
+		<property name="folderService" ref="folderService"></property>
+	</bean>
+
+	<bean id="userAction" class="com.action.UserAction">
+		<property name="userService" ref="userService">
+		</property>
+		<property name="user">
+			<bean class="com.entity.User"></bean>
+		</property>
+	</bean>
+	<!-- User -->
+
+	<!-- File -->
+	<bean id="fileDao" class="com.dao.FileDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="fileService" class="com.service.FileServiceImpl">
+		<property name="dao" ref="fileDao"></property>
+		<property name="folderService" ref="folderService"></property>
+		<property name="userService" ref="userService"></property>
+	</bean>
+
+	<bean id="fileAction" class="com.action.FileAction">
+		<property name="fileService" ref="fileService"></property>
+		<property name="userService" ref="userService"></property>
+		<property name="file">
+			<bean class="com.entity.File"></bean>
+		</property>
+	</bean>
+	<!-- File -->
+
+	<!-- Folder -->
+	<bean id="folderDao" class="com.dao.FolderDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="folderService" class="com.service.FolderServiceImpl">
+		<property name="dao" ref="folderDao"></property>
+		<property name="userService" ref="userService"></property>
+		<property name="fileService" ref="fileService"></property>
+	</bean>
+
+	<bean id="folderAction" class="com.action.FolderAction">
+		<property name="fileService" ref="fileService"></property>
+		<property name="folderService" ref="folderService"></property>
+		<property name="userService" ref="userService"></property>
+		<property name="folder">
+			<bean class="com.entity.Folder"></bean>
+		</property>
+	</bean>
+	<!-- Folder -->
+
+	<!-- OptRecord -->
+	<bean id="optRecordDao" class="com.dao.OptRecordDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="optRecordService"
+		class="com.service.OptRecordServiceImpl">
+		<property name="dao" ref="optRecordDao"></property>
+	</bean>
+	
+	<bean id="optRecordAction" class="com.action.OptRecordAction">
+		<property name="optRecordService" ref="optRecordService"></property>
+	</bean>
+	<!-- OptRecord -->
+
+	<bean id="deleteAction" class="com.action.DeleteAction">
+		<property name="fileService" ref="fileService"></property>
+		<property name="folderService" ref="folderService"></property>
+		<property name="userService" ref="userService"></property>
+	</bean>
+
+
+
+	<!-- aspect -->
+	<bean id="fileAspect" class="com.aspect.FileAspect">
+		<property name="userService" ref="userService"></property>
+		<property name="optRecordService" ref="optRecordService"></property>
+	</bean>
+	<bean id="folderAspect" class="com.aspect.FolderAspect">
+		<property name="userService" ref="userService"></property>
+		<property name="optRecordService" ref="optRecordService"></property>
+	</bean>
+	<!-- aspect -->
+
+	<!-- aop -->
+	<aop:config>
+		<aop:aspect ref="fileAspect">
+			<aop:pointcut id="filepoint"
+				expression="execution(* com.service.FileServiceImpl.add*(..)) || execution(* com.service.FileServiceImpl.remove*(..)) || execution(* com.service.FileServiceImpl.rename*(..)) || execution(* com.service.FileServiceImpl.upload*(..)) || execution(* com.service.FileServiceImpl.download*(..))"></aop:pointcut>
+			<aop:around pointcut-ref="filepoint" method="aroundRecord"></aop:around>
+		</aop:aspect>
+
+		<aop:aspect ref="folderAspect">
+			<aop:pointcut id="folderpoint"
+				expression="execution(* com.service.FolderServiceImpl.add*(..)) || execution(* com.service.FolderServiceImpl.remove*(..)) || execution(* com.service.FolderServiceImpl.rename*(..))"></aop:pointcut>
+			<aop:around pointcut-ref="folderpoint"
+				method="aroundRecord"></aop:around>
+		</aop:aspect>
+	</aop:config>
+	<!-- aop -->
+
+</beans>

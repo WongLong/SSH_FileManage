@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+
+<struts>
+	<!-- Overwrite Convention -->
+	<constant name="struts.convention.action.suffix"
+		value="Controller" />
+	<constant name="struts.convention.action.mapAllMatches"
+		value="true" />
+	<constant name="struts.convention.default.parent.package"
+		value="rest-showcase" />
+	<constant name="struts.objectFactory" value="spring" />
+	<constant name="struts.convention.package.locators"
+		value="example" />
+
+	<package name="main" extends="struts-default">
+		<global-results>
+			<result name="login">/jsp/login.jsp</result>
+		</global-results>
+	</package>
+
+	<package name="myStruts" extends="main,json-default">
+		<interceptors>
+			<interceptor name="loginInterceptor"
+				class="com.interceptor.LoginInterceptor"></interceptor>
+		</interceptors>
+	
+		<action name="login" class="userAction" method="login">
+			<result name="success">/jsp/fileManage.jsp</result>
+			<result name="input">/jsp/login.jsp</result>
+		</action>
+		
+		<action name="getAllUser" class="userAction" method="getAllUser">
+			<result name="success">/jsp/searchFile.jsp</result>
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="loginInterceptor" />
+		</action>
+
+		<action name="clickFolder" class="folderAction"
+			method="clickFolder">
+			<result name="success">/jsp/fileManage.jsp</result>
+			<result type="json" name="json">
+				<param name="root">json</param>
+			</result>
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="loginInterceptor" />
+		</action>
+
+		<action name="addFolder" class="folderAction"
+			method="addFolder">
+			<result name="success">/jsp/fileManage.jsp</result>
+			<result name="error">/jsp/addFolder.jsp</result>
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="loginInterceptor" />
+		</action>
+		
+		<action name="renameFolder" class="folderAction" method="renameFolder">
+			<result name="success">/jsp/fileManage.jsp</result>
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="loginInterceptor" />
+		</action>
+
+		<action name="addFile" class="fileAction" method="addFile">
+			<result name="success">/jsp/fileManage.jsp</result>
+			<result name="error">/jsp/addFile.jsp</result>
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="loginInterceptor" />
+		</action>
+		
+		<action name="renameFile" class="fileAction" method="renameFile">
+			<result name="success">/jsp/fileManage.jsp</result>
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="loginInterceptor" />
+		</action>
+		
+		<action name="searchFile" class="fileAction" method="searchFile">
+			<result name="success">/jsp/fileManage.jsp</result>
+			<result name="input">/jsp/searchFile.jsp</result>
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="loginInterceptor" />
+		</action>
+		
+		<action name="viewFile" class="fileAction" method="viewFile">
+			<result name="success">/jsp/viewFile.jsp</result>
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="loginInterceptor" />
+		</action>
+
+		<action name="uploadFile" class="fileAction"
+			method="uploadFile">
+			<result name="success">/jsp/fileManage.jsp</result>
+			<result name="input">/jsp/uploadFile.jsp</result>
+			<result name="error">/jsp/uploadFile.jsp</result>
+			<interceptor-ref name="defaultStack">
+				<param name="fileUpload.maximumSize">4194304</param>
+				<param name="fileUpload.allowedExtensions">
+					.txt,.doc,.html,.jpg,.pptx
+				</param>
+				<param name="fileUpload.allowedTypes">text/plain,application/octet-stream,image/jpeg,application/msword,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/html</param>
+			</interceptor-ref>
+			<interceptor-ref name="loginInterceptor" />
+		</action>
+
+		<action name="downloadFile" class="fileAction">
+			<result type="stream" name="success">
+				<param name="contentType">text/plain,application/octet-stream,image/jpeg,application/msword,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/html</param>
+				<param name="contentDisposition">
+					attachment;filename=${downFileName}
+				</param>
+				<param name="inputName">downloadFile</param>
+				<param name="bufferSize">1024</param>
+			</result>
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="loginInterceptor" />
+		</action>
+		
+		<action name="deleteChecked" class="deleteAction"
+			method="deleteChecked">
+			<result name="success">/jsp/fileManage.jsp</result>
+			<result type="json" name="json">
+				<param name="root">json</param>
+			</result>
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="loginInterceptor" />
+		</action>
+		
+		<action name="history" class="optRecordAction" method="getHistoryRecord">
+			<result name="success">/jsp/history.jsp</result>
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="loginInterceptor" />
+		</action>
+		<action name="lastPage" class="optRecordAction" method="lastPage">
+			<result name="success">/jsp/history.jsp</result>
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="loginInterceptor" />
+		</action>
+		<action name="nextPage" class="optRecordAction" method="nextPage">
+			<result name="success">/jsp/history.jsp</result>
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="loginInterceptor" />
+		</action>
+		<action name="enterPress" class="optRecordAction" method="enterPress">
+			<result name="success">/jsp/history.jsp</result>
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="loginInterceptor" />
+		</action>
+	</package>
+</struts>
